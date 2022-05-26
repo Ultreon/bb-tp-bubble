@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "name": "Teleport Bubble",
+  "id": "teleportbubble",
+  "version": "0.1.0",
+
+  "description": "Adds a teleport bubble to Bubble Blaster.",
+  "authors": [
+    "XyperCode"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14",
+    "bubbleblaster": ">=0.1.0"
+  },
+  "icon": {
+    "256": "assets/teleportbubble/icon.png"
+  },
+  "entrypoints": {
+    "main": [
+      "io.github.ultreon.bbmods.tpbubble.TPBubbleMod"
+    ]
+  }
+}
