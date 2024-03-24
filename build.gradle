@@ -9,8 +9,12 @@ plugins {
     id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
 }
 
-group 'org.example'
+group 'io.github.ultreon.bbmods'
 version '1.0-SNAPSHOT'
+
+base {
+    archivesName = 'teleport-bubble'
+}
 
 repositories {
     mavenCentral()
@@ -27,16 +31,23 @@ repositories {
     maven {
         name "JitPack"
         url "https://jitpack.io"
+        content {
+            includeGroup "com.github.JnCrMx"
+            includeGroup "space.earlygrey"
+        }
     }
     maven {
         name "Maven Central"
         url "https://repo1.maven.org/maven2/"
     }
-    maven { url "https://github.com/Ultreon/ultreon-data/raw/main/.mvnrepo/" }
-    maven { url "https://github.com/Ultreon/corelibs/raw/main/.mvnrepo/" }
+
     maven {
-        name "Bubble Blaster Maven"
-        url "https://github.com/Ultreon/bubble-blaster/raw/main/.mavenrepo/"
+        name = "Bubble Blaster 2 Maven"
+        url = uri("https://maven.pkg.github.com/Ultreon/bubble-blaster-2")
+        credentials {
+            username = project.findProperty("gpr.user") == null ? System.getenv("USERNAME") : project.findProperty("gpr.user")
+            password = project.findProperty("gpr.key") == null ? System.getenv("TOKEN") : project.findProperty("gpr.key")
+        }
     }
     maven {
         name "Fabric Maven"
@@ -49,18 +60,8 @@ configurations {
 }
 
 dependencies {
-    api "com.github.Ultreon.bubble-blaster-2:desktop:libgdx-SNAPSHOT", {
-        exclude module: "log4j-slf4j-impl"
-    }
-    api "com.github.Ultreon.bubble-blaster-2:desktop-merge:libgdx-SNAPSHOT", {
-        exclude module: "log4j-slf4j-impl"
-    }
-    api "com.github.Ultreon.bubble-blaster-2:core:libgdx-SNAPSHOT", {
-        exclude module: "log4j-slf4j-impl"
-    }
-    api "com.github.Ultreon.bubble-blaster-2:gameprovider:libgdx-SNAPSHOT", {
-        exclude module: "log4j-slf4j-impl"
-    }
+    api "io.github.ultreon.bubbles:bubble-blaster-desktop:0.1.+", { exclude module: "log4j-slf4j-impl"; exclude group: "org.lwjgl.lwjgl" }
+    api "io.github.ultreon.bubbles:bubble-blaster-core:0.1.+", { exclude module: "log4j-slf4j-impl"; exclude group: "org.lwjgl.lwjgl" }
 
     implementation "net.fabricmc:fabric-loader:0.14.22"
 
@@ -123,7 +124,7 @@ idea{
                 "Bubble Blaster"(Application) {                       // Create new run configuration "MyApp" that will run class foo.App
                     jvmArgs = "-Xmx2g -Dfabric.dli.config=$launchFile.path -Dfabric.dli.env=CLIENT -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient"
                     mainClass = 'net.fabricmc.devlaunchinjector.Main'
-                    moduleName = idea.module.name + ".desktop.main"
+                    moduleName = idea.module.name + ".main"
                     workingDirectory = "$projectDir/run/"
                     programParameters = "--gameDir=."
                 }
